@@ -1,0 +1,99 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.45,
+      "y": 7.31
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "a1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "aShoot1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "angle6"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "gyro0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "a2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopIntake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "a3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "angle6"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "aShoot2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "a4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopIntake"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
