@@ -70,11 +70,11 @@ public class Teleop extends Command {
       translation = new Translation2d(xVelocity * 0.45, yVelocity * 0.45);
     } else if (controle1.getRawAxis(Controle.leftTrigger) != 0) {
       translation = new Translation2d(xVelocity * 4, yVelocity * 4);
+    } else {
+      translation = new Translation2d(
+          xVelocity * Tracao.MAX_SPEED,
+          yVelocity * Tracao.MAX_SPEED);
     }
-
-    translation = new Translation2d(
-        xVelocity * Tracao.MAX_SPEED,
-        yVelocity * Tracao.MAX_SPEED);
 
     // Caso essa função seja verdadeira a aceleração do robô será limitada
     swerve.drive(translation, omega, Tracao.fieldRelative);

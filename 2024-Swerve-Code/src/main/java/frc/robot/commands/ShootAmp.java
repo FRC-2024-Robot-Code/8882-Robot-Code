@@ -10,7 +10,7 @@ public class ShootAmp extends SequentialCommandGroup {
 
   public ShootAmp(Shooter shooter, AngleShooter angle) {
     addCommands(
-        Commands.runOnce(() -> angle.setTarget(0.985), angle),
+        Commands.runOnce(() -> angle.setTarget(0.7), angle),
         Commands.runOnce(() -> shooter.setSpeed(0.18), shooter),
         new WaitCommand(1),
         Commands.runOnce(() -> shooter.setSpeedConveyor(0.3), shooter),

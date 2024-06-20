@@ -24,7 +24,6 @@ public class AngleShooter extends SubsystemBase {
     pidEncoder = new DutyCycleEncoder(0);
     angle1 = new CANSparkMax(11, MotorType.kBrushless);
     angle2 = new CANSparkMax(12, MotorType.kBrushless);
-    // pidEncoder.setPositionOffset(0.51);
     pidEncoder.setDutyCycleRange(0.20, 0.99);
 
     angle2.setInverted(true);
@@ -32,31 +31,31 @@ public class AngleShooter extends SubsystemBase {
 
   }
 
-  public double getAngle() {
-    double inter = 0;
+  // public double getAngle() {
+  // double inter = 0;
 
-    double[] get = LimelightHelpers.getTargetPose_RobotSpace("");
+  // double[] get = LimelightHelpers.getTargetPose_RobotSpace("");
 
-    if (get.length >= 2) {
-      double tz = get[2];
+  // if (get.length >= 2) {
+  // double tz = get[2];
 
-      inter = interpolating.get(tz);
+  // inter = interpolating.get(tz);
 
-      if (inter > 1) {
-        inter = 0.8;
-      } else if (inter < 0.1) {
-        inter = 0.5;
-      }
+  // if (inter > 1) {
+  // inter = 0.8;
+  // } else if (inter < 0.1) {
+  // inter = 0.5;
+  // }
 
-    }
-    return inter;
-  }
+  // }
+  // return inter;
+  // }
 
-  private double getTz() {
-    double[] get = LimelightHelpers.getTargetPose_RobotSpace("");
+  // private double getTz() {
+  // double[] get = LimelightHelpers.getTargetPose_RobotSpace("");
 
-    return get.length >= 2 ? get[2] : 0.0;
-  }
+  // return get.length >= 2 ? get[2] : 0.0;
+  // }
 
   public void stop() {
     angle1.stopMotor();
@@ -85,9 +84,7 @@ public class AngleShooter extends SubsystemBase {
     setSpeed(outPut);
 
     SmartDashboard.putNumber("Position", getPosition());
-    SmartDashboard.putNumber("Angle For Shoot", getAngle());
     SmartDashboard.putNumber("Setpoint", anglePidController.getSetpoint() * 360);
-    SmartDashboard.putNumber("tz", getTz());
-    SmartDashboard.putNumber("Velocity Angle", outPut);
+    // SmartDashboard.putNumber("tz", getTz());
   }
 }

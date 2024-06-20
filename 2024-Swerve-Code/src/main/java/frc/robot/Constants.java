@@ -71,7 +71,7 @@ public final class Constants {
     public static double translationD = 0.0;
 
     // PID de angulação do Lançador
-    public static double kP = 1.2;
+    public static double kP = 3;
     public static double kI = 0.0;
     public static double kD = 0.0;
   }
