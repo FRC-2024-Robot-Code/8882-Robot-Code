@@ -1,40 +1,52 @@
 package frc.robot.commands;
 
+import javax.xml.crypto.Data;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.AngleShooter;
+import frc.robot.subsystems.Angle;
 
 public class AngleRelative extends Command {
-     AngleShooter angle;
-     Joystick control;
+
+     Angle robot;
      PIDController pidController;
 
      double setpoint;
 
-     public AngleRelative(AngleShooter angle, double setpoint) {
-          this.angle = angle;
-          this.setpoint = setpoint;
-          pidController = new PIDController(1, 0, 0);
+     DoubleLogEntry setpointLogEntry = new DoubleLogEntry(DataLogManager.getLog(), "angle/setpoint");
+     DoubleLogEntry outputLogEntry = new DoubleLogEntry(DataLogManager.getLog(), "angle/velocity");
 
-          addRequirements(angle);
+     public AngleRelative(Angle robot, double setpoint) {
+          this.robot = robot;
+          this.setpoint = setpoint;
+          pidController = new PIDController(0.5, 0, 0);
+          pidController.setSetpoint(setpoint);
+          setpointLogEntry.append(setpoint);
+
+          addRequirements(robot);
      }
 
      @Override
      public void initialize() {
-          // angle.resetEncoder();
      }
 
      @Override
      public void execute() {
-          double outPut = pidController.calculate(angle.getPosition(), setpoint);
+          double outPut = pidController.calculate(robot.getAnglePosition());
 
-          angle.setSpeed(outPut);
+          outPut = MathUtil.clamp(outPut, -0.2, 0.2);
+
+          robot.setAngleSpeed(outPut);
+          outputLogEntry.append(outPut);
      }
 
      @Override
      public void end(boolean interrupted) {
-
+          robot.stopAngle();
      }
 
      @Override

@@ -3,68 +3,61 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
+     CANSparkMax blackShooter, greeenShooter, conveyor;
+     DigitalInput irSensor = new DigitalInput(0);
 
-  CANSparkMax BlackShooter, GreenShooter, conveyor;
+     String irSensoString = "OFF";
+     StringLogEntry irSensorLogEntry = new StringLogEntry(DataLogManager.getLog(), "shooter/ir");
 
-  DigitalInput irSensor = new DigitalInput(0);
+     public Shooter() {
+          blackShooter = new CANSparkMax(13, MotorType.kBrushless);
+          greeenShooter = new CANSparkMax(14, MotorType.kBrushless);
+          conveyor = new CANSparkMax(15, MotorType.kBrushless);
 
-  BooleanLogEntry irLogEntry = new BooleanLogEntry(DataLogManager.getLog(), "shooter/ir");
+          greeenShooter.setInverted(true);
+          blackShooter.setInverted(true);
+          conveyor.setInverted(true);
+          greeenShooter.follow(blackShooter);
+     }
 
-  public Shooter() {
-    BlackShooter = new CANSparkMax(13, MotorType.kBrushless);
-    GreenShooter = new CANSparkMax(14, MotorType.kBrushless);
-    conveyor = new CANSparkMax(15, MotorType.kBrushless);
+     public boolean getIrState() {
+          return irSensor.get();
+     }
 
-    GreenShooter.setInverted(true);
-    BlackShooter.setInverted(true);
+     public void setShooterSpeed(double speed) {
+          blackShooter.set(speed);
+     }
 
-    conveyor.setInverted(true);
-    GreenShooter.follow(BlackShooter);
-  }
+     public void setConveyorSpeed(double speed) {
+          conveyor.set(speed);
+     }
 
-  public void setSpeed(double speed) {
-    BlackShooter.set(speed);
-  }
+     public void collectConveyor(double speed) {
+          if (getIrState()) {
+               conveyor.stopMotor();
+          } else {
+               conveyor.set(speed);
+          }
+     }
 
-  public void stopMotor() {
-    BlackShooter.stopMotor();
-  }
+     public void stopShooter() {
+          blackShooter.stopMotor();
+     }
 
-  public void setSpeedConveyor(double speed) {
-    conveyor.set(speed);
-  }
+     public void stopConveyor() {
+          conveyor.stopMotor();
+     }
 
-  public void stopMotorConveyor() {
-    conveyor.stopMotor();
-  }
+     @Override
+     public void periodic() {
+          SmartDashboard.putBoolean("State IR", getIrState());
 
-  public void stopAll() {
-    BlackShooter.stopMotor();
-    conveyor.stopMotor();
-  }
-
-  public boolean getState() {
-    irLogEntry.append(irSensor.get());
-    return irSensor.get();
-  }
-
-  public void collect() {
-    if (getState()) {
-      conveyor.stopMotor();
-    } else {
-      conveyor.set(0.2);
-    }
-  }
-
-  @Override
-  public void periodic() {
-    SmartDashboard.putBoolean("State IR", getState());
-  }
+     }
 }

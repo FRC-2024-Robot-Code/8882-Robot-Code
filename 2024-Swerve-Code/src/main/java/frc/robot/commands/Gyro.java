@@ -4,17 +4,17 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.PID;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Swerve;
 
 public class Gyro extends Command {
 
   PIDController anglePIDController;
 
-  SwerveSubsystem swerve;
+  Swerve swerve;
 
   double setPoint;
 
-  public Gyro(SwerveSubsystem subsystem, double setPoint) {
+  public Gyro(Swerve subsystem, double setPoint) {
     swerve = subsystem;
     this.setPoint = setPoint;
     anglePIDController =

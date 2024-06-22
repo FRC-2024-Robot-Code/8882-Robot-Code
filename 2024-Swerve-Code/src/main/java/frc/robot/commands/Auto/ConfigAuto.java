@@ -11,14 +11,14 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import frc.robot.Constants.PID;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Swerve;
 
 /** Add your docs here. */
 public class ConfigAuto {
 
-  SwerveSubsystem swerve;
+  Swerve swerve;
 
-  public ConfigAuto(SwerveSubsystem swerve) {
+  public ConfigAuto(Swerve swerve) {
     this.swerve = swerve;
   }
 
