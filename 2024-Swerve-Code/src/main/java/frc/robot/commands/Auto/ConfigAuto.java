@@ -9,6 +9,8 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Constants;
+import frc.robot.Constants.PID;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /** Add your docs here. */
@@ -28,14 +30,15 @@ public class ConfigAuto {
         swerve::setChassisSpeeds, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
             // Constants class
-            new PIDConstants(14.5, 0, 0),
-            // Translation PID constants
             new PIDConstants(
-                9,
-                0.5,
-                0.0),
-            // Rotation PID constants
-            12.0,
+                PID.translationAutoPID.p,
+                PID.translationAutoPID.i,
+                PID.translationAutoPID.d), // Translation PID
+            new PIDConstants(
+                PID.angleAutoPID.p,
+                PID.angleAutoPID.i,
+                PID.angleAutoPID.d), // Rotation PID
+            4.72,
             // Max module speed, in m/s
             swerve.getSwerveDriveConfiguration().getDriveBaseRadiusMeters(),
             // Drive base radius in meters. Distance from robot center to furthest module.
