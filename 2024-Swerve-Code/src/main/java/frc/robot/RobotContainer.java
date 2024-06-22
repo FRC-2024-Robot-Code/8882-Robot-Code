@@ -5,7 +5,10 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.StadiaController.Button;
@@ -19,12 +22,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Controle;
 import frc.robot.Constants.Trajetoria;
-import frc.robot.commands.AngleCmd;
-import frc.robot.commands.Collect;
+import frc.robot.commands.AngleAbsolute;
 import frc.robot.commands.GyroLimelight;
-import frc.robot.commands.ShootAmp;
 import frc.robot.commands.ShootSpeaker;
 import frc.robot.commands.Teleop;
+import frc.robot.commands.Auto.CollectAuto;
 import frc.robot.subsystems.AngleShooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -47,36 +49,55 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
+
     swerve.setDefaultCommand(
         new Teleop(
             swerve,
-            () -> -MathUtil.applyDeadband(driverControl.getLeftY(), Controle.DEADBAND),
-            () -> -MathUtil.applyDeadband(driverControl.getLeftX(), Controle.DEADBAND),
-            () -> -MathUtil.applyDeadband(driverControl.getRightX(), Controle.DEADBAND),
+            () -> MathUtil.applyDeadband(driverControl.getLeftY(), Controle.DEADBAND),
+            () -> MathUtil.applyDeadband(driverControl.getLeftX(), Controle.DEADBAND),
+            () -> MathUtil.applyDeadband(driverControl.getRightX(), Controle.DEADBAND),
             driverControl));
 
-    autoChooser = AutoBuilder.buildAutoChooser();
+    NamedCommands.registerCommand("intake", new CollectAuto(subIntake, subShooter, subAngle));
+    NamedCommands.registerCommand("stopIntake", Commands.runOnce(() ->
 
-    subAngle.setDefaultCommand(new AngleCmd(subAngle, operatorControl));
+    {
+      subIntake.stop();
+    }, subIntake));
 
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+  autoChooser = AutoBuilder.buildAutoChooser();
 
-    configureBindings();
+  // subAngle.setDefaultCommand(new AngleCmd(subAngle, operatorControl));
+
+  SmartDashboard.putData("Auto Chooser", autoChooser);
+
+  configureBindings();
+
   }
 
   private void configureBindings() {
+    new JoystickButton(operatorControl, XboxController.Button.kA.value)
+        .onTrue(new CollectAuto(subIntake, subShooter, subAngle));
+
+    new JoystickButton(driverControl, XboxController.Button.kX.value)
+        .onTrue(Commands.run(() -> {
+          swerve.aimToSpeakerBlue();
+
+        }, swerve));
+    new JoystickButton(driverControl, XboxController.Button.kX.value).onFalse(new Teleop(
+        swerve,
+        () -> -MathUtil.applyDeadband(driverControl.getLeftY(), Controle.DEADBAND),
+        () -> -MathUtil.applyDeadband(driverControl.getLeftX(), Controle.DEADBAND),
+        () -> -MathUtil.applyDeadband(driverControl.getRightX(), Controle.DEADBAND),
+        driverControl));
+
     new JoystickButton(driverControl, Button.kA.value)
         .onTrue(new InstantCommand(swerve::zeroGyro));
 
     new Trigger(this::getRight).onTrue(new ShootSpeaker(subShooter));
 
-    new JoystickButton(operatorControl, XboxController.Button.kA.value).onTrue(new Collect(subShooter, subIntake))
-        .onFalse(Commands.runOnce(() -> {
-          subShooter.stopMotorConveyor();
-          subIntake.stop();
-        }, subIntake, subShooter));
-
-    new JoystickButton(driverControl, XboxController.Button.kX.value).onTrue(new GyroLimelight(swerve, 0));
+    // new JoystickButton(driverControl, XboxController.Button.kX.value).onTrue(new
+    // GyroLimelight(swerve, 0));
 
   }
 
@@ -96,14 +117,17 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // swerve.zeroGyro();
-    // return autoChooser.getSelected();
+    return autoChooser.getSelected();
 
-    return swerve.getAutonomousCommand(Trajetoria.NOME_TRAJETORIA, true, true);
+    // return swerve.getAutonomousCommand(Trajetoria.NOME_TRAJETORIA1, true, true);
   }
 
   public void setMotorBrake(boolean brake) {
     swerve.setMotorBrake(brake);
+  }
+
+  public void setHeadingCorrection(boolean headingCorrection) {
+    swerve.swerveDrive.setHeadingCorrection(headingCorrection);
   }
 
 }

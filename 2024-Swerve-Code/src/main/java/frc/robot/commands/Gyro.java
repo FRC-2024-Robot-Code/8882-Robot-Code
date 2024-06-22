@@ -19,9 +19,9 @@ public class Gyro extends Command {
     this.setPoint = setPoint;
     anglePIDController =
       new PIDController(
-        PID.angleAutoPID.p,
-        PID.angleAutoPID.i,
-        PID.angleAutoPID.d
+            PID.anglePID.p,
+            PID.anglePID.i,
+            PID.anglePID.d
       );
     anglePIDController.enableContinuousInput(-180, 180);
     // anglePIDController.setTolerance(0.1);

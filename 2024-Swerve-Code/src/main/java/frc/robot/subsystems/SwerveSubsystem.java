@@ -7,16 +7,21 @@ package frc.robot.subsystems;
 import java.io.File;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Dimensoes;
 import frc.robot.Constants.Tracao;
+import frc.robot.LimelightHelpers;
 import frc.robot.commands.Auto.ConfigAuto;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
@@ -30,10 +35,12 @@ import swervelib.parser.SwerveParser;
  */
 public class SwerveSubsystem extends SubsystemBase {
   // Objeto global da SwerveDrive (Classe YAGSL)
-  SwerveDrive swerveDrive;
+  public SwerveDrive swerveDrive;
 
   // Objeto global autônomo
   ConfigAuto autonomo;
+
+  private Field2d field2d = new Field2d();
 
   // Método construtor da classe
   public SwerveSubsystem(File directory) {
@@ -53,19 +60,65 @@ public class SwerveSubsystem extends SubsystemBase {
     autonomo = new ConfigAuto(this);
 
     autonomo.setupPathPlanner();
+
+    // SmartDashboard.putData(field2d);
   }
 
   @Override
   public void periodic() {
     // Dentro da função periódica atualizamos nossa odometria
+    visionUpdateOdometry();
     swerveDrive.updateOdometry();
+  }
 
+  public void chassiAim(double spotToAim) {
+    double angularVelocity = swerveDrive.swerveController.headingCalculate(getHeading().getRadians(), spotToAim);
+    swerveDrive.drive(new ChassisSpeeds(0, 0, angularVelocity));
+  }
+
+  public double getAngleToAimToSpeaker() {
+    double angleDegree = getPose().getTranslation().minus(new Translation2d(0.0, 5.5)).getAngle().getRadians();
+    return angleDegree;
+  }
+
+  public void aimToSpeakerBlue() {
+    chassiAim(getAngleToAimToSpeaker());
+  }
+
+  public void visionUpdateOdometry() {
+    if (!DriverStation.isAutonomous()) {
+      boolean doRejectUpdate = false;
+      // Ela pega a orientação do robô em relação a odometry
+      LimelightHelpers.SetRobotOrientation("", swerveDrive.getOdometryHeading().getDegrees(),
+          0, 0, 0, 0, 0);
+      // Ela é a pose estimate da classe
+      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
+      // if our angular velocity is greater than 720 degrees per second, ignore vision
+      // updates
+      if (Math.abs(Math.toDegrees(getRobotVelocity().omegaRadiansPerSecond)) > 200) {
+        doRejectUpdate = true;
+      }
+      if (mt2.tagCount == 0) {
+        doRejectUpdate = true;
+      }
+      if (!doRejectUpdate) {
+        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+        swerveDrive.addVisionMeasurement(
+            mt2.pose,
+            mt2.timestampSeconds);
+      }
+    }
+    // field2d.setRobotPose(mt2.pose);
   }
 
   public Measure<Distance> distanceToTarget(Translation2d target) {
     Translation2d robotPos = this.swerveDrive.getPose().getTranslation();
     double measured = robotPos.getDistance(target);
     return edu.wpi.first.units.Units.Meters.of(measured);
+  }
+
+  public void setHeadingCorrection(boolean headingCorrection) {
+    swerveDrive.setHeadingCorrection(headingCorrection);
   }
 
   public Rotation2d rotationToTarget(Translation2d target) {
@@ -151,8 +204,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public Command getAutonomousCommand(String pathName, boolean alliance, boolean setOdomToStart) {
 
-    // Create a path following command using AutoBuilder. This will also trigger
-    // event markers.
     return new PathPlannerAuto(pathName);
   }
 }

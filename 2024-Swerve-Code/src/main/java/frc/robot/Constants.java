@@ -22,8 +22,8 @@ public final class Constants {
     // Posições do centro de massa
 
     // Máxima aceleração e velocidade
-    public static final double MAX_ACCE_AUTO = 4.5;
-    public static final double MAX_VEL_AUTO = 4.5;
+    public static final double MAX_ACCE_AUTO = 4.72;
+    public static final double MAX_VEL_AUTO = 4.72;
 
     // Diâmetro da roda do módulo
     public static final double wheelDiameterInMeters = 0.1016;
@@ -59,16 +59,12 @@ public final class Constants {
 
   public static final class PID {
 
-    // PID para frente e para trás
-    public static final PIDFConfig xAutoPID = new PIDFConfig(1.52, 0, 0);
-    // PID para esquerda e direita
-    public static final PIDFConfig yAutoPID = new PIDFConfig(1.52, 0, 0);
+    // PID para translação
+    public static final PIDFConfig translationAutoPID = new PIDFConfig(14.5, 0, 0);
     // PID de rotação
     public static final PIDFConfig angleAutoPID = new PIDFConfig(10, 0.5, 0);
-    // PID de translação do autônomo
-    public static double translationP = 9;
-    public static double translationI = 0.0;
-    public static double translationD = 0.0;
+    // PID de rotação no proprio eixo
+    public static final PIDFConfig anglePID = new PIDFConfig(10, 0.5, 0);
 
     // PID de angulação do Lançador
     public static double kP = 3;
@@ -114,7 +110,7 @@ public final class Constants {
 
     public static final double TURN_CONSTANT = 0.75;
 
-    public static final double MAX_SPEED = 15;
+    public static final double MAX_SPEED = 4.72;
 
     public static final double dt = 0.02;
 
@@ -126,7 +122,7 @@ public final class Constants {
 
     public static final boolean ALIANCA = true; // Caso a aliança seja azul use false, se for vermelha use true
     // Auto Speaker: 4 notes
-    public static final String NOME_TRAJETORIA = "Auto Mid";
+    public static final String NOME_TRAJETORIA1 = "teste";
     // Auto Source: 2 notes
   }
 }

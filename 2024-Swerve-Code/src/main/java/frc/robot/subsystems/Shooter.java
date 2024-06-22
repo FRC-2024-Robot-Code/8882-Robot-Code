@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -49,17 +50,21 @@ public class Shooter extends SubsystemBase {
     conveyor.stopMotor();
   }
 
-  public double getState() {
+  public boolean getState() {
     irLogEntry.append(irSensor.get());
-    return irSensor.get() ? 1 : 0;
+    return irSensor.get();
   }
 
   public void collect() {
-    if (getState() != 0) {
+    if (getState()) {
       conveyor.stopMotor();
     } else {
       conveyor.set(0.2);
     }
   }
 
+  @Override
+  public void periodic() {
+    SmartDashboard.putBoolean("State IR", getState());
+  }
 }

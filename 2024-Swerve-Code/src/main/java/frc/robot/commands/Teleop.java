@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Controle;
@@ -60,9 +61,20 @@ public class Teleop extends Command {
   // Abaixo calculamos os valores de saída a partir dos nossos inputs
   @Override
   public void execute() {
-    double xVelocity = y.getAsDouble() * Tracao.multiplicadorTranslacionalY;
-    double yVelocity = x.getAsDouble() * Tracao.multiplicadorTranslacionalX;
-    double angVelocity = turn.getAsDouble() * Tracao.multiplicadorRotacional;
+
+    double angVelocity;
+    double xVelocity;
+    double yVelocity;
+
+    if (DriverStation.Alliance.Red == DriverStation.getAlliance().get()) {
+      xVelocity = y.getAsDouble() * Tracao.multiplicadorTranslacionalY;
+      yVelocity = x.getAsDouble() * Tracao.multiplicadorTranslacionalX;
+      angVelocity = turn.getAsDouble() * Tracao.multiplicadorRotacional;
+    } else {
+      xVelocity = -y.getAsDouble() * Tracao.multiplicadorTranslacionalY;
+      yVelocity = -x.getAsDouble() * Tracao.multiplicadorTranslacionalX;
+      angVelocity = -turn.getAsDouble() * Tracao.multiplicadorRotacional;
+    }
 
     omega = controller.config.maxAngularVelocity * angVelocity;
 
