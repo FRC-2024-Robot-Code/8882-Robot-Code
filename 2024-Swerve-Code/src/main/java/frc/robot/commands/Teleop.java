@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Controle;
 import frc.robot.Constants.Tracao;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Swerve;
 import java.util.function.DoubleSupplier;
 import swervelib.SwerveController;
 
@@ -25,7 +25,7 @@ public class Teleop extends Command {
   DoubleSupplier turn;
 
   // Objetos necessárias para acessar funções e variáveis
-  SwerveSubsystem swerve;
+  Swerve swerve;
   SwerveController controller;
 
   // Variáveis que guardam a translação e velocidade angular do swerve
@@ -36,7 +36,7 @@ public class Teleop extends Command {
   XboxController controle1;
 
   public Teleop(
-      SwerveSubsystem swerve,
+      Swerve swerve,
       DoubleSupplier y,
       DoubleSupplier x,
       DoubleSupplier turn,

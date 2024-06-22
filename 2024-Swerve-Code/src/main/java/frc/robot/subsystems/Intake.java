@@ -9,50 +9,45 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
+     CANSparkMax frontIntake, backIntake;
+     String intakeState = "NONE";
 
-  CANSparkMax frontIntake, backIntake;
+     StringLogEntry stateLogEntry = new StringLogEntry(DataLogManager.getLog(), "intake/state");
 
-  String state = "NONE";
+     public Intake() {
+          frontIntake = new CANSparkMax(9, MotorType.kBrushless);
+          backIntake = new CANSparkMax(10, MotorType.kBrushless);
 
-  StringLogEntry stateLogEntry = new StringLogEntry(DataLogManager.getLog(), "intake/states");
+          backIntake.setInverted(false);
+          frontIntake.setInverted(false);
+     }
 
-  public Intake() {
-    frontIntake = new CANSparkMax(9, MotorType.kBrushless);
-    backIntake = new CANSparkMax(10, MotorType.kBrushless);
+     public void collectIntake() {
+          setIntakeState("INTAKING");
+          frontIntake.set(0.9);
+          backIntake.set(-0.9);
+     }
 
-    backIntake.setInverted(true);
-  }
+     public void invertIntake() {
+          setIntakeState("INVERTING");
+          frontIntake.set(-0.9);
+          backIntake.set(-0.9);
+     }
 
-  public void collect() {
-    setState("INTAKING");
-    frontIntake.set(0.8);
-    backIntake.set(0.9);
-  }
+     public void stopIntake() {
+          setIntakeState("STOPPED");
+          frontIntake.stopMotor();
+          backIntake.stopMotor();
+     }
 
-  public void collectAuto() {
-    frontIntake.set(0.8);
-    backIntake.set(0.9);
-  }
+     public void setIntakeState(String state) {
+          this.intakeState = state;
+          stateLogEntry.append(state);
+     }
 
-  public void invert() {
-    setState("INVERTING");
-    frontIntake.set(-0.8);
-    backIntake.set(-0.8);
-  }
+     @Override
+     public void periodic() {
+          SmartDashboard.putString("State Intake", intakeState);
 
-  public void stop() {
-    setState("STOPPED");
-    frontIntake.stopMotor();
-    backIntake.stopMotor();
-  }
-
-  public void setState(String state) {
-    this.state = state;
-    stateLogEntry.append(state);
-  }
-
-  @Override
-  public void periodic() {
-    SmartDashboard.putString("State Intake", state);
-  }
+     }
 }
