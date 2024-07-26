@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -13,7 +12,7 @@ public class Shooter extends SubsystemBase {
      CANSparkMax blackShooter, greeenShooter, conveyor;
      DigitalInput irSensor = new DigitalInput(0);
 
-     String irSensoString = "OFF";
+     String irSensorString = "OFF";
      StringLogEntry irSensorLogEntry = new StringLogEntry(DataLogManager.getLog(), "shooter/ir");
 
      public Shooter() {
@@ -57,7 +56,6 @@ public class Shooter extends SubsystemBase {
 
      @Override
      public void periodic() {
-          SmartDashboard.putBoolean("State IR", getIrState());
-
+          SmartDashboard.putBoolean("IR State", getIrState());
      }
 }

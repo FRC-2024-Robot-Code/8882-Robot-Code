@@ -11,26 +11,21 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-
   private RobotContainer m_robotContainer;
-
-  private Timer disebledTimer;
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
 
     this.m_robotContainer = new RobotContainer();
-    this.disebledTimer = new Timer();
+    new Timer();
 
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
-
 
   }
 
@@ -66,9 +61,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_robotContainer.setHeadingCorrection(true);
-
-    // angle.align();
-    // new AngleAbsolute(angle).schedule();
+    RobotContainer.shooter.stopShooter();
+    RobotContainer.shooter.stopConveyor();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
