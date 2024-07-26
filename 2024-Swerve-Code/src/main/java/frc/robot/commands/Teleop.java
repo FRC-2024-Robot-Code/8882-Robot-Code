@@ -66,7 +66,7 @@ public class Teleop extends Command {
     double xVelocity;
     double yVelocity;
 
-    if (DriverStation.Alliance.Red == DriverStation.getAlliance().get()) {
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
       xVelocity = y.getAsDouble() * Tracao.multiplicadorTranslacionalY;
       yVelocity = x.getAsDouble() * Tracao.multiplicadorTranslacionalX;
       angVelocity = turn.getAsDouble() * Tracao.multiplicadorRotacional;
@@ -81,7 +81,7 @@ public class Teleop extends Command {
     if (controle1.getRawAxis(Controle.rightTrigger) != 0) {
       translation = new Translation2d(xVelocity * 0.45, yVelocity * 0.45);
     } else if (controle1.getRawAxis(Controle.leftTrigger) != 0) {
-      translation = new Translation2d(xVelocity * 4, yVelocity * 4);
+      translation = new Translation2d(xVelocity * 2, yVelocity * 2);
     } else {
       translation = new Translation2d(
           xVelocity * Tracao.MAX_SPEED,
