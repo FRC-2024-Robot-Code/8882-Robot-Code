@@ -5,27 +5,15 @@
 package frc.robot.subsystems;
 
 import java.io.File;
-
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.util.datalog.StringLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -45,12 +33,7 @@ import swervelib.parser.SwerveParser;
  * Classe de subsistema onde fazemos a ponte do nosso código para YAGSL
  */
 public class Swerve extends SubsystemBase {
-  // Objeto global da SwerveDrive (Classe YAGSL)
   public SwerveDrive swerveDrive;
-
-  DoubleLogEntry setpointLogEntry = new DoubleLogEntry(DataLogManager.getLog(), "angle/setpoint");
-
-  double setpoint = 0;
 
   // Objeto global autônomo
   ConfigAuto autonomo;
@@ -85,6 +68,8 @@ public class Swerve extends SubsystemBase {
     // Dentro da função periódica atualizamos nossa odometria
     visionUpdateOdometry();
     swerveDrive.updateOdometry();
+    SmartDashboard.putNumber("Distance to Goal", getDistancetoGoal());
+    // SmartDashboard.putNumber("Odometry Y", getOdometryY());
   }
 
   // Swerve
@@ -94,19 +79,46 @@ public class Swerve extends SubsystemBase {
   }
 
   public double getAngleToAimToSpeaker() {
-    double angleDegree = getPose().getTranslation().minus(new Translation2d(0.0, 5.5)).getAngle().getRadians();
-    return angleDegree;
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+      double angleDegree = getPose().getTranslation().minus(new Translation2d(16.45, 5.55)).getAngle().getRadians();
+      return angleDegree;
+    } else {
+      double angleDegree = getPose().getTranslation().minus(new Translation2d(0.0, 5.55)).getAngle().getRadians();
+      return angleDegree;
+    }
   }
 
-  public void aimToSpeakerBlue() {
+  public void aimToSpeaker() {
     chassiAim(getAngleToAimToSpeaker());
+  }
+
+  public double getOdometryX() {
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      return Math.abs(getPose().getTranslation().minus(new Translation2d(16.45, 5.5)).getX());
+    } else {
+      return getPose().getTranslation().minus(new Translation2d(0.0, 5.5)).getX();
+    }
+  }
+
+  public double getOdometryY() {
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      return getPose().getTranslation().minus(new Translation2d(16.45, 5.5)).getY();
+    } else {
+      return getPose().getTranslation().minus(new Translation2d(0.0, 5.5)).getY();
+    }
+  }
+
+  public double getDistancetoGoal() {
+    double distance = Math.sqrt((getOdometryX() * getOdometryX()) + (getOdometryY() * getOdometryY()));
+    return distance;
   }
 
   public void visionUpdateOdometry() {
     if (!DriverStation.isAutonomous()) {
       boolean doRejectUpdate = false;
       // Ela pega a orientação do robô em relação a odometry
-      LimelightHelpers.SetRobotOrientation("", swerveDrive.getOdometryHeading().getDegrees(),
+      LimelightHelpers.SetRobotOrientation("",
+          swerveDrive.getOdometryHeading().getDegrees(),
           0, 0, 0, 0, 0);
       // Ela é a pose estimate da classe
       LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
@@ -119,13 +131,37 @@ public class Swerve extends SubsystemBase {
         doRejectUpdate = true;
       }
       if (!doRejectUpdate) {
-        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+        swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,
+            .7, 9999999));
         swerveDrive.addVisionMeasurement(
             mt2.pose,
             mt2.timestampSeconds);
       }
+      field2d.setRobotPose(mt2.pose);
     }
-    // field2d.setRobotPose(mt2.pose);
+
+    // LimelightHelpers.PoseEstimate mt1 =
+    // LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    // boolean doRejectUpdate = false;
+    // if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
+    // if (mt1.rawFiducials[0].ambiguity > .7) {
+    // doRejectUpdate = true;
+    // }
+    // if (mt1.rawFiducials[0].distToCamera > 3) {
+    // doRejectUpdate = true;
+    // }
+    // }
+    // if (mt1.tagCount == 0) {
+    // doRejectUpdate = true;
+    // }
+
+    // if (!doRejectUpdate) {
+    // swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5,
+    // .5, 9999999));
+    // swerveDrive.addVisionMeasurement(
+    // mt1.pose,
+    // mt1.timestampSeconds);
+    // }
   }
 
   public Measure<Distance> distanceToTarget(Translation2d target) {

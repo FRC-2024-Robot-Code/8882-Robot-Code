@@ -8,8 +8,8 @@ import frc.robot.subsystems.Shooter;
 public class Amp extends SequentialCommandGroup {
      public Amp(Shooter shooter) {
           addCommands(
-                    Commands.runOnce(() -> shooter.setShooterSpeed(0.2), shooter),
-                    new WaitCommand(1),
+                    Commands.runOnce(() -> shooter.setShooterSpeed(0.15), shooter),
+                    new WaitCommand(1.8),
                     Commands.runOnce(() -> shooter.setConveyorSpeed(0.3), shooter),
                     new WaitCommand(1),
                     Commands.runOnce(() -> {

@@ -1,24 +1,23 @@
-package frc.robot.commands;
+package frc.robot.commands.Auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class Collect extends Command {
+public class CollectAuto extends Command {
 
      Intake intake;
      Shooter shooter;
 
-     public Collect(Intake intake, Shooter shooter) {
+     public CollectAuto(Intake intake, Shooter shooter) {
           this.intake = intake;
           this.shooter = shooter;
-
           addRequirements(intake, shooter);
      }
 
      @Override
      public void execute() {
-          shooter.collectConveyor(0.25);
+          shooter.collectConveyor(0.23);
           intake.collectIntake();
      }
 

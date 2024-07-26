@@ -60,16 +60,12 @@ public final class Constants {
   public static final class PID {
 
     // PID para translação
-    public static final PIDFConfig translationAutoPID = new PIDFConfig(14.5, 0, 0);
+    public static final PIDFConfig translationAutoPID = new PIDFConfig(5.5, 1, 0);
     // PID de rotação
-    public static final PIDFConfig angleAutoPID = new PIDFConfig(10, 0.5, 0);
+    public static final PIDFConfig angleAutoPID = new PIDFConfig(6, 0.5, 0);
     // PID de rotação no proprio eixo
     public static final PIDFConfig anglePID = new PIDFConfig(10, 0.5, 0);
 
-    // PID de angulação do Lançador
-    public static double kP = 0.4;
-    public static double kI = 0.0;
-    public static double kD = 0.0;
   }
 
   public static final class Controle {
@@ -110,7 +106,7 @@ public final class Constants {
 
     public static final double TURN_CONSTANT = 0.75;
 
-    public static final double MAX_SPEED = 4.72;
+    public static final double MAX_SPEED = 3.77;
 
     public static final double dt = 0.02;
 
@@ -122,7 +118,9 @@ public final class Constants {
 
     public static final boolean ALIANCA = true; // Caso a aliança seja azul use false, se for vermelha use true
     // Auto Speaker: 4 notes
-    public static final String NOME_TRAJETORIA1 = "teste";
+    public static final String TRY = "try";
+    public static final String AUTO_MID_1 = "Auto Mid 1";
+    public static final String AUTO_SOURCE_1 = "Auto Source 1";
     // Auto Source: 2 notes
   }
 }

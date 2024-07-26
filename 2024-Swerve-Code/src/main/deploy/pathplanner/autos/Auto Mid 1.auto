@@ -1,0 +1,182 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.2429287286320239,
+      "y": 5.531967463604621
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "mShoot1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "angle1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "mid1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "mid2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "mShoot3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "angle3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "mid3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "angleForIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "angle3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "mShoot3"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "mid4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "mid5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "angleForIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "angle5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "mShoot3"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "mid6"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
