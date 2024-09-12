@@ -17,12 +17,10 @@ public class Gyro extends Command {
   public Gyro(Swerve subsystem, double setPoint) {
     swerve = subsystem;
     this.setPoint = setPoint;
-    anglePIDController =
-      new PIDController(
-            PID.anglePID.p,
-            PID.anglePID.i,
-            PID.anglePID.d
-      );
+    anglePIDController = new PIDController(
+        PID.anglePID.p,
+        PID.anglePID.i,
+        PID.anglePID.d);
     anglePIDController.enableContinuousInput(-180, 180);
     // anglePIDController.setTolerance(0.1);
 
@@ -30,20 +28,21 @@ public class Gyro extends Command {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   @Override
   public void execute() {
     double outPut = anglePIDController.calculate(
-      swerve.getHeading().getRadians(),
-      Math.toRadians(setPoint)
-    );
+        swerve.getHeading().getRadians(),
+        Math.toRadians(setPoint));
     swerve.setChassisSpeeds(new ChassisSpeeds(0, 0, outPut));
   }
 
   @Override
   public void end(boolean interrupted) {
     swerve.setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
+    this.cancel();
   }
 
   @Override

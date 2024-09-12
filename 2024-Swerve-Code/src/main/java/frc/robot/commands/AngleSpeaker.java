@@ -9,28 +9,23 @@ import frc.robot.subsystems.Angle;
 public class AngleSpeaker extends Command {
 
      Angle angle;
-     PIDController pidController;
-
-     double setpoint;
+     PIDController pid = new PIDController(1.7, 0.025, 0);
      InterpolatingDoubleTreeMap anglesMap = new InterpolatingDoubleTreeMap();
      double inter = 0;
 
      public AngleSpeaker(Angle angle) {
           this.angle = angle;
-          pidController = new PIDController(3, 0, 0);
 
-          anglesMap.put(2.1, 0.3);
-          anglesMap.put(2.2, 0.29); // 2.22
-          anglesMap.put(2.3, 0.285); // 2.3
-          anglesMap.put(2.4, 0.275); // 2.4
-          anglesMap.put(2.5, 0.27); // 2.5
-          anglesMap.put(2.6, 0.26); // 2.64
-          anglesMap.put(2.8, 0.255); // 2.8
-          anglesMap.put(2.9, 0.242); // 2.9
-          anglesMap.put(3.0, 0.24); // 3.0
-          anglesMap.put(3.1, 0.234); // 3.1
-          anglesMap.put(3.2, 0.228); // 3.2
-          anglesMap.put(3.3, 0.222); // 3.3
+          anglesMap.put(2.1, 0.313);// .320
+          anglesMap.put(2.25, 0.293);// .300
+          anglesMap.put(2.38, 0.268);// .275
+          anglesMap.put(2.54, 0.258);// .265
+
+          anglesMap.put(2.68, 0.245);// .250
+          anglesMap.put(2.86, 0.241);// .245
+          anglesMap.put(3.0, 0.231);// .236
+          anglesMap.put(3.1, 0.227);// .232
+          anglesMap.put(3.37, 0.225);// .230
 
           addRequirements(angle);
      }
@@ -48,9 +43,9 @@ public class AngleSpeaker extends Command {
                inter = 0.5;
           }
 
-          double outPut = pidController.calculate(angle.getABSgyro(), inter);
-          outPut = MathUtil.clamp(outPut, -0.3, 0.3);
-          angle.setAngleSpeed(outPut);
+          double output = pid.calculate(angle.getABSgyro(), inter);
+          output = MathUtil.clamp(output, -4, 4);
+          angle.setAngleSpeed(output);
      }
 
      @Override
