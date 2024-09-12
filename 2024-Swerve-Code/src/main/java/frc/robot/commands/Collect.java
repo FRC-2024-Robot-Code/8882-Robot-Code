@@ -18,7 +18,7 @@ public class Collect extends Command {
 
      @Override
      public void execute() {
-          shooter.collectConveyor(0.25);
+          shooter.collectConveyor(0.23);
           intake.collectIntake();
      }
 

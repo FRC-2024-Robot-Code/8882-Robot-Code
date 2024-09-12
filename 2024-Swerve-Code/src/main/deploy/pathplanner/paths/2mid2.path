@@ -3,46 +3,40 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.650046054540507,
-        "y": 2.6390502128572475
+        "x": 8.26051834784571,
+        "y": 7.439979197870614
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.10534392361786,
-        "y": 0.27266939468635804
+        "x": 6.790051255072855,
+        "y": 7.3620736565316545
       },
       "isLocked": false,
-      "linkedName": "endSource2"
+      "linkedName": "secondMid1"
     },
     {
       "anchor": {
-        "x": 1.1224231226635653,
-        "y": 4.294542966310132
+        "x": 1.8722639580559168,
+        "y": 5.862391985761557
       },
       "prevControl": {
-        "x": 1.580118178029951,
-        "y": 2.794861295535166
+        "x": 3.7322587575235713,
+        "y": 6.65118559181852
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "endSource3"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.15,
-      "rotationDegrees": -55.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "New Constraints Zone",
       "minWaypointRelativePos": 0.75,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 3.5,
-        "maxAcceleration": 2.5,
+        "maxVelocity": 1.8,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 180.0,
         "maxAngularAcceleration": 200.0
       }
@@ -50,8 +44,8 @@
   ],
   "eventMarkers": [
     {
-      "name": "return",
-      "waypointRelativePos": 0,
+      "name": "conveyor1",
+      "waypointRelativePos": 0.95,
       "command": {
         "type": "parallel",
         "data": {
@@ -59,7 +53,7 @@
             {
               "type": "named",
               "data": {
-                "name": "return0"
+                "name": "conveyor"
               }
             }
           ]
@@ -67,7 +61,7 @@
       }
     },
     {
-      "name": "angle",
+      "name": "angle1",
       "waypointRelativePos": 0.75,
       "command": {
         "type": "parallel",
@@ -76,7 +70,7 @@
             {
               "type": "named",
               "data": {
-                "name": "sAngle2"
+                "name": "ang1"
               }
             }
           ]
@@ -85,21 +79,21 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.72,
-    "maxAcceleration": 3.7,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 200.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -55.0,
+    "velocity": 1.0,
+    "rotation": 9.462322208025594,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 30.0,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

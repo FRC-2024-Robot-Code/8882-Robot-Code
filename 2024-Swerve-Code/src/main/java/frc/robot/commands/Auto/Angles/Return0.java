@@ -6,16 +6,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Angle;
 
 public class Return0 extends Command {
-     Angle robot;
-     PIDController pidController;
+     Angle angle;
      double setpoint;
+     PIDController pid = new PIDController(0.8, 0, 0);
 
-     public Return0(Angle robot) {
+     public Return0(Angle angle) {
 
-          this.robot = robot;
-          pidController = new PIDController(2, 0, 0);
+          this.angle = angle;
 
-          addRequirements(robot);
+          addRequirements(angle);
      }
 
      @Override
@@ -24,25 +23,20 @@ public class Return0 extends Command {
 
      @Override
      public void execute() {
-          double outPut = pidController.calculate(robot.getABSgyro(), 0.85);
-          // 0.165
-          outPut = MathUtil.clamp(outPut, -0.4, 0.4);
-
-          robot.setAngleSpeed(outPut);
+          double output = pid.calculate(angle.getABSgyro(), 0.90);
+          output = MathUtil.clamp(output, -4, 4);
+          angle.setAngleSpeed(output);
      }
 
      @Override
      public void end(boolean interrupted) {
-          robot.stopAngle();
+          angle.stopAngle();
           this.cancel();
      }
 
      @Override
      public boolean isFinished() {
-          if (pidController.atSetpoint()) {
-               return true;
-          }
-          return false;
+          return pid.atSetpoint();
 
      }
 }

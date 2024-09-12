@@ -5,12 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Controle;
 import frc.robot.Constants.Tracao;
 import frc.robot.subsystems.Swerve;
+
 import java.util.function.DoubleSupplier;
 import swervelib.SwerveController;
 
@@ -65,16 +65,9 @@ public class Teleop extends Command {
     double angVelocity;
     double xVelocity;
     double yVelocity;
-
-    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-      xVelocity = y.getAsDouble() * Tracao.multiplicadorTranslacionalY;
-      yVelocity = x.getAsDouble() * Tracao.multiplicadorTranslacionalX;
-      angVelocity = turn.getAsDouble() * Tracao.multiplicadorRotacional;
-    } else {
-      xVelocity = -y.getAsDouble() * Tracao.multiplicadorTranslacionalY;
-      yVelocity = -x.getAsDouble() * Tracao.multiplicadorTranslacionalX;
-      angVelocity = -turn.getAsDouble() * Tracao.multiplicadorRotacional;
-    }
+    xVelocity = y.getAsDouble() * Tracao.multiplicadorTranslacionalY;
+    yVelocity = x.getAsDouble() * Tracao.multiplicadorTranslacionalX;
+    angVelocity = turn.getAsDouble() * Tracao.multiplicadorRotacional;
 
     omega = controller.config.maxAngularVelocity * angVelocity;
 

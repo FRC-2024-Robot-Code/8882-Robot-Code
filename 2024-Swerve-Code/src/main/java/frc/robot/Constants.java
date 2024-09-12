@@ -60,11 +60,11 @@ public final class Constants {
   public static final class PID {
 
     // PID para translação
-    public static final PIDFConfig translationAutoPID = new PIDFConfig(5.5, 1, 0);
+    public static final PIDFConfig translationAutoPID = new PIDFConfig(4, 0, 0);
     // PID de rotação
-    public static final PIDFConfig angleAutoPID = new PIDFConfig(6, 0.5, 0);
+    public static final PIDFConfig angleAutoPID = new PIDFConfig(4, 0, 0);
     // PID de rotação no proprio eixo
-    public static final PIDFConfig anglePID = new PIDFConfig(10, 0.5, 0);
+    public static final PIDFConfig anglePID = new PIDFConfig(2, 0, 0);
 
   }
 
@@ -106,7 +106,7 @@ public final class Constants {
 
     public static final double TURN_CONSTANT = 0.75;
 
-    public static final double MAX_SPEED = 3.77;
+    public static final double MAX_SPEED = 4.0;
 
     public static final double dt = 0.02;
 
@@ -121,6 +121,7 @@ public final class Constants {
     public static final String TRY = "try";
     public static final String AUTO_MID_1 = "Auto Mid 1";
     public static final String AUTO_SOURCE_1 = "Auto Source 1";
+    public static final String AUTO_SOURCE_2 = "Auto Source 2";
     // Auto Source: 2 notes
   }
 }
